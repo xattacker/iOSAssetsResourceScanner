@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<project name="iOSAssetsResourceScanner" default="createjar">
+
+	<target name="createjar">
+	    
+	   <delete file="iOSAssetsResourceScanner.jar"/>
+	   
+	   <jar destfile="iOSAssetsResourceScanner.jar" basedir="bin">
+	        <manifest>
+                <attribute name="Main-Class" value="com.xattacker.MainEntry"/>
+                <attribute name="Specification-Version" value="1.0.1"/>
+            </manifest>
+	   </jar>
+	</target>
+
+</project>
+
