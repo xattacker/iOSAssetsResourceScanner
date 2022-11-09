@@ -1,2 +1,2 @@
 # iOSAssetsResourceScanner
-XCode iOS project Assets used Scanner
+Help scanning XCode iOS project Assets resource usage situation
