@@ -111,7 +111,7 @@ public final class MainPanel extends Frame
 			{
 				if (_resourceKeys == null)
 				{
-					showDialog("Input Error", "Localizable.strings not set", DialogType.ERROR);
+					showDialog("Input Error", "assets resouse not set", DialogType.ERROR);
 					
 					return;
 				}
