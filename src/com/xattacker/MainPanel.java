@@ -205,15 +205,10 @@ public final class MainPanel extends Frame
 	{
 		try
 		{
-			
 			JFileChooser chooser = new JFileChooser(aDefautDir);
 			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
 		   chooser.setAcceptAllFileFilterUsed(false); // disable the "All files" option.
-		   
-		   // 要指定一個 遇到 dir 時要 pass 的 FileFilter
-			MyFileFilter filter = new MyFileFilter("");
-			chooser.setFileFilter(filter);
-			
+
 			int result = chooser.showOpenDialog(this);
 			if (result == JFileChooser.APPROVE_OPTION)
 			{
