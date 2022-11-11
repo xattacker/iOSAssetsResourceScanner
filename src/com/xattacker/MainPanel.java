@@ -2,6 +2,7 @@ package com.xattacker;
 
 import java.awt.Button;
 import java.awt.Dimension;
+import java.awt.FileDialog;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.xattacker.convert.ios.IOSSourceCodeLoader;
+import com.xattacker.util.OSPlatform;
 import com.xattacker.convert.ios.IOSAssetsResourceImporter;
 
 
@@ -205,15 +207,30 @@ public final class MainPanel extends Frame
 	{
 		try
 		{
-			JFileChooser chooser = new JFileChooser(aDefautDir);
-			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
-		   chooser.setAcceptAllFileFilterUsed(false); // disable the "All files" option.
-
-			int result = chooser.showOpenDialog(this);
-			if (result == JFileChooser.APPROVE_OPTION)
+			switch (OSPlatform.getOS())
 			{
-				File selected = chooser.getSelectedFile();
-				aListener.onFileSelected(selected);
+				case Mac:
+			        System.setProperty("apple.awt.fileDialogForDirectories", "true");
+
+			        FileDialog dialog = new FileDialog(new Frame(), "Choose Directory");
+			        dialog.setVisible(true);
+
+			        String path = dialog.getDirectory() + dialog.getFile();
+			        aListener.onFileSelected(new File(path));
+					  break;
+					
+				default:
+					JFileChooser chooser = new JFileChooser(aDefautDir);
+					chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
+				   chooser.setAcceptAllFileFilterUsed(false); // disable the "All files" option.
+
+					int result = chooser.showOpenDialog(this);
+					if (result == JFileChooser.APPROVE_OPTION)
+					{
+						File selected = chooser.getSelectedFile();
+						aListener.onFileSelected(selected);
+					}
+					break;
 			}
 		}
 		catch (Exception e)
