@@ -9,7 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -24,6 +30,8 @@ import com.xattacker.convert.ios.IOSAssetsResourceImporter;
 
 public final class MainPanel extends Frame
 {
+	private final static String EXPORTED_FILE = "assets_compared_exported.txt";
+	
 	private HashMap<String, String> _resourceKeys;
 	
 	private LinkedHashMap<String, String> _sources;
@@ -172,8 +180,28 @@ public final class MainPanel extends Frame
 			
 			System.out.println("unused assets: " + unused.size());
 			System.out.println(builder.toString());
+			exportUnusedAssetsToFile(builder.toString());
 			
-			showDialog("Scan Completed", "There are non existed resource key: (" + unused.size() + ") \n" + builder.toString(), DialogType.WARNING);
+			showDialog("Scan Completed", "non existed resource key count: " + unused.size() + ",\ncompared result exported to file " + EXPORTED_FILE, DialogType.WARNING);
+		}
+	}
+	
+	private void exportUnusedAssetsToFile(String content)
+	{
+		try
+		{
+			 String class_path = MainPanel.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+			 File folder = new File(class_path);
+			 File file = new File(folder.getParent() + File.separator + EXPORTED_FILE); 
+		
+		    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+		    writer.write(content);
+		    
+		    writer.close();
+		}
+		catch (Throwable th)
+		{
+			showDialog("Export Failed", "Export log to File failed", DialogType.ERROR);
 		}
 	}
 	
